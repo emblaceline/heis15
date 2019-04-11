@@ -74,23 +74,23 @@ int queue_empty();
 * @return Returns the floor of the next order. Returns -2 if there are no orders.
 */
 
-int queue_get_next_order_up(int lastFloor);
+//int queue_get_next_order_up(int lastFloor);
 
 /**
 * @brief Gets the floor of the next order call-down queue.
 *
 * @return Returns the floor of the next order. Returns -2 if there are no orders.
 */
-int queue_get_next_order_down(int lastFloor);
+//int queue_get_next_order_down(int lastFloor);
 
-int queue_get_next_order_over(int lastFloor);
+//int queue_get_next_order_over(int lastFloor);
 
-int queue_get_next_order_under(int lastFloor);
+//int queue_get_next_order_under(int lastFloor);
 
 
 
 void print_queue();
 
-
+int queue_get_next_order(int lastFloor, int motorDir);
 
 #endif // #ifndef __INCLUDE_QUEUE_H__

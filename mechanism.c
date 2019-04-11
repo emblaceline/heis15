@@ -99,7 +99,7 @@ void mechanism_drive(int lastFloor){
 	int order = -2;
 
 	//print_queue();
-	if(motorDir==0){
+	/*if(motorDir==0){
 		order=queue_get_next_order_up(lastFloor);
 		if(order==-2){
 			order=queue_get_next_order_down(lastFloor);
@@ -116,9 +116,9 @@ void mechanism_drive(int lastFloor){
 		}
 
 
-		/*if(order==lastFloor && elev_get_floor_sensor_signal()==-1 && emergencyWasPressed == 0){
+		if(order==lastFloor && elev_get_floor_sensor_signal()==-1 && emergencyWasPressed == 0){
 			order=queue_get_next_order_over(lastFloor);
-		}*/
+		}
 	}
 	else{ 
 		order=queue_get_next_order_down(lastFloor);
@@ -130,12 +130,14 @@ void mechanism_drive(int lastFloor){
 			order=queue_get_next_order_up(lastFloor);
 		}
 
-		/*
+		
 		if(order==lastFloor && elev_get_floor_sensor_signal()==-1 && emergencyWasPressed==0){
 			order=queue_get_next_order_under(lastFloor);
-		}*/
-	}
+		}
+	}*/
 	//order=mechanism_get_order(motorDir, lastFloor);
+
+	order=queue_get_next_order(lastFloor, motorDir);
 
 	if(emergencyWasPressed==1){
 		if(order!=-2){
