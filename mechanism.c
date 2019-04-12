@@ -97,20 +97,24 @@ int mechanism_compare(int order, int lastFloor){
 
 void mechanism_drive(int lastFloor){ 
 	int order = -2;
-	order=queue_get_next_order(lastFloor, motorDir);
 
 	if(emergencyWasPressed==1){
+		order=queue_get_next_order(lastFloor, 0);
 		if(order!=-2){
 			emergencyWasPressed=0;
 			if(order==lastFloor){
-				emergencyDir=motorDir;
+				emergencyDir=-motorDir;
 			}
 		}
+	}
+
+	else{
+		order=queue_get_next_order(lastFloor, motorDir);
 	}
 	
 	if(order!=-2 && door_get_door_open()==0){
        	if(emergencyDir!=0){
-       		elev_set_motor_direction(-(emergencyDir));
+       		elev_set_motor_direction(emergencyDir);
        		if(elev_get_floor_sensor_signal()==order){
        			emergencyDir=0;
        		}

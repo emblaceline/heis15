@@ -91,8 +91,14 @@ int queue_empty();
 
 void print_queue();
 
-int queue_nr_of_order();
-
 int queue_get_next_order(int lastFloor, int motorDir);
+
+int queue_empty_in_dir(int upOrDown, int lastFloor);
+
+int queue_get_next_order_stop(int lastFloor);
+int queue_get_next_order_moving_up(int lastFloor);
+int queue_get_next_order_moving_down(int lastFloor);
+
+
 
 #endif // #ifndef __INCLUDE_QUEUE_H__
