@@ -11,27 +11,28 @@
 static int up_queue[4]={0};
 static int down_queue[4]={0}; 
 static int command_queue[4]={0};
-int lastDir=1;
-int problemUp, problemDown =0;
 
-void queue_set(int order, int lastFloor, int motorDir){
-	elev_set_button_lamp(BUTTON_COMMAND, order,1);
+//last direction of the motor
+int lastDir=1;
+int problemUp, problemDown=0;
+
+void queue_set_queue(int order, int lastFloor, int motorDir, int buttonType){
+	elev_set_button_lamp(buttonType, order,1);
 	if (order==lastFloor && elev_get_floor_sensor_signal()==order && motorDir==0) {
 		door_open_door();
-		elev_set_button_lamp(BUTTON_COMMAND,order,0);
+		elev_set_button_lamp(buttonType,order,0);
 	}
 	else{
-		command_queue[order]=1;
-
+		if(buttonType==0){
+			up_queue[order]=1;
+		}
+		else if(buttonType==1){
+			down_queue[order]=1;
+		}
+		else{
+			command_queue[order]=1;
+		}
 	}
-}
-
-void queue_set_up_queue(int order, int lastFloor){
-	up_queue[order]=1;
-}
-
-void queue_set_down_queue(int order, int lastFloor){
-	down_queue[order]=1;
 }
 
 int queue_get_next_order(int lastFloor, int motorDir){
@@ -93,7 +94,7 @@ int queue_get_next_order_stop(int lastFloor){
 					return i;
 				}
 			}
-			for(int i=lastFloor+1; i<N_FLOORS-1; i++){
+			for(int i=lastFloor+1; i<N_FLOORS; i++){
 				if (command_queue[i]==1){
 					return i;
 				}
@@ -112,12 +113,12 @@ int queue_get_next_order_stop(int lastFloor){
 int queue_get_next_order_moving_up(int lastFloor){
 	lastDir=1;
 		if(elev_get_floor_sensor_signal()>=0){
-			if(problemUp<5){  // Dette fikser problemet adressert under, men er kanskje ikke fineste løsningen? 
+			if(problemUp<7){  // So that the sensor does not read the signal before lastFloor changes.
 				problemUp++;
 			}
 			else{
-				if(up_queue[lastFloor]==1){  //noen ganger leser den av signal fra sensor før lastFloor har blitt byttet, da kan den slette feil
-					return lastFloor;		// sånn som skjer i kryssfeil
+				if(up_queue[lastFloor]==1){ 
+					return lastFloor;		
 				}
 				if(command_queue[lastFloor]==1){
 					return lastFloor;
@@ -153,7 +154,7 @@ int queue_get_next_order_moving_down(int lastFloor){
 	lastDir=-1;
 		if(elev_get_floor_sensor_signal()>=0){
 			if(elev_get_floor_sensor_signal()>=0){
-				if(problemDown<5){
+				if(problemDown<7){ // So that the sensor does not read the signal before lastFloor changes.
 					problemDown++;
 				}
 				else{
@@ -240,30 +241,17 @@ int queue_empty_in_dir(int upOrDown, int lastFloor){
 	return -2;
 }
 
-
-void print_queue(){ 
-	printf("UP: ");
-	for (int i = 0; i < 4; ++i)
-	{
+void print_queue(){
+	printf("\n UP:");
+	for(int i=0; i<N_FLOORS; i++){
 		printf("%i", up_queue[i]);
-		if(i==3){
-			printf(" \n");
-		}
 	}
-	printf("DOWN: ");
-	for (int i = 0; i < 4; ++i)
-	{
+	printf("\n DOWN:");
+	for(int i=0; i<N_FLOORS; i++){
 		printf("%i", down_queue[i]);
-		if(i==3){
-			printf(" \n");
-		}
 	}
-	printf("COMMAND: ");
-	for (int i = 0; i < 4; ++i)
-	{
+	printf("\n COMMAND:");
+	for(int i=0; i<N_FLOORS; i++){
 		printf("%i", command_queue[i]);
-		if(i==3){
-			printf(" \n");
-		}
 	}
 }

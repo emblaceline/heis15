@@ -11,25 +11,24 @@
 
 int motorDir = 0;
 int emergencyWasPressed=0;
+//last direction of the motor before emergency
 int emergencyDir=0;
 
-void mechanism_check_all_button(int lastFloor){
+void mechanism_check_all_buttons(int lastFloor){
 	for (int floor=0; floor<N_FLOORS; floor++) {
 		if (elev_get_button_signal(BUTTON_COMMAND,floor)) {
-			queue_set(floor, lastFloor, motorDir);
+			queue_set_queue(floor, lastFloor, motorDir, 2);
 		}
 
 		if (floor!=N_FLOORS-1) {
-
 			if (elev_get_button_signal(BUTTON_CALL_UP, floor)==1){
-				queue_set_up_queue(floor,lastFloor);
-				elev_set_button_lamp(BUTTON_CALL_UP, floor, 1);
+				queue_set_queue(floor, lastFloor, motorDir, 0);
 			}
 		}
+
 		if (floor != 0) {
 			if (elev_get_button_signal(BUTTON_CALL_DOWN, floor)==1){
-				queue_set_down_queue(floor,lastFloor);
-				elev_set_button_lamp(BUTTON_CALL_DOWN, floor, 1);
+				queue_set_queue(floor, lastFloor, motorDir, 1);
 			}
 		}
 	}
@@ -97,6 +96,7 @@ int mechanism_compare(int order, int lastFloor){
 
 void mechanism_drive(int lastFloor){ 
 	int order = -2;
+	print_queue();
 
 	if(emergencyWasPressed==1){
 		order=queue_get_next_order(lastFloor, 0);
@@ -131,4 +131,5 @@ void mechanism_drive(int lastFloor){
        	}
     }
 }
+
 

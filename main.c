@@ -22,34 +22,23 @@ int main() {
 
     printf("Press STOP button to stop elevator and exit program.\n");
 
-
+    //Initilaze elevator
     start_up();
-    printf("been here\n");
-    //int floor = N_FLOORS; 
     
     while(1){
         if(elev_get_floor_sensor_signal() != -1){ 
             lastFloor = elev_get_floor_sensor_signal();
         }
-        while(elev_get_stop_signal()==0){
 
+        while(elev_get_stop_signal()==0){
             if(elev_get_floor_sensor_signal() >= 0){ 
                 lastFloor = elev_get_floor_sensor_signal();
                 if (lastFloor!=-1)
                     elev_set_floor_indicator(lastFloor);
             }
-            mechanism_check_all_button(lastFloor);
+
+            mechanism_check_all_buttons(lastFloor);
             mechanism_drive(lastFloor);
-            if(elev_get_stop_signal()){
-                elev_set_motor_direction(DIRN_STOP);
-                break;
-            }   
-            /*
-            if (mechanism_correct_floor(floor) && (!door_get_door_open())){ 
-                elev_set_motor_direction(DIRN_STOP);
-                door_open_door();
-            }*/
-            
 
             if(door_get_door_open()){
                 door_close_door();
