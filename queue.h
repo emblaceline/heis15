@@ -95,6 +95,4 @@ int queue_empty();
 */
 int queue_empty_in_dir(int upOrDown, int lastFloor);
 
-void print_queue();
-
 #endif // #ifndef __INCLUDE_QUEUE_H__

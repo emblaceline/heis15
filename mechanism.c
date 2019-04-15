@@ -46,8 +46,6 @@ void mechanism_emergency(){
 		}
 	}
 	elev_set_stop_lamp(0);
-	
-
 }
 
 
@@ -60,7 +58,6 @@ void mechanism_turn_off_all_lights(){
 		elev_set_button_lamp(BUTTON_CALL_UP,floor,0);
 		elev_set_button_lamp(BUTTON_CALL_DOWN,floor+1,0);
 	}
-
 }
 
 void mechanism_turn_off_light(int order){
@@ -96,7 +93,6 @@ int mechanism_compare(int order, int lastFloor){
 
 void mechanism_drive(int lastFloor){ 
 	int order = -2;
-	print_queue();
 
 	if(emergencyWasPressed==1){
 		order=queue_get_next_order(lastFloor, 0);

@@ -240,18 +240,3 @@ int queue_empty_in_dir(int upOrDown, int lastFloor){
 	}
 	return -2;
 }
-
-void print_queue(){
-	printf("\n UP:");
-	for(int i=0; i<N_FLOORS; i++){
-		printf("%i", up_queue[i]);
-	}
-	printf("\n DOWN:");
-	for(int i=0; i<N_FLOORS; i++){
-		printf("%i", down_queue[i]);
-	}
-	printf("\n COMMAND:");
-	for(int i=0; i<N_FLOORS; i++){
-		printf("%i", command_queue[i]);
-	}
-}
